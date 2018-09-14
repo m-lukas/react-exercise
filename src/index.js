@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Square(props) {
+  function Square(props) {
       return (
         <button className="square" 
                 onClick={() => { props.onClick() }}
@@ -11,6 +11,24 @@ function Square(props) {
         </button>
       );
   }
+
+  function StepButton(props) {
+    if(props.lastStep){
+      return (
+        <li key={props.move}>
+          <button class="bold" onClick={() => { props.jumpTo() }}>{props.desc}</button>
+        </li>  
+      );
+    }else{
+      return (
+        <li key={props.move}>
+          <button onClick={() => { props.jumpTo() }}>{props.desc}</button>
+        </li>  
+      );
+    }
+
+    
+}
   
   class Board extends React.Component {
 
@@ -92,9 +110,12 @@ function Square(props) {
           'Go to move #' + move + ' (' + history[move].col + '|' + history[move].row + ')' :
           'Go to game start';
           return(
-            <li key={move}>
-              <button onClick={() => this.jumpTo(move)}>{desc}</button>
-            </li>
+            <StepButton 
+              lastStep={move === history.length-1 ? true : false}
+              move={move}
+              jumpTo={() => this.jumpTo(move)}
+              desc={desc}
+            />  
           );
       });
 
