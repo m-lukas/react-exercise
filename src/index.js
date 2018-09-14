@@ -14,10 +14,10 @@ function Square(props) {
   
   class Board extends React.Component {
 
-    renderSquare(i) {
+    renderSquare(col,row,i) {
       return <Square
         value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
+        onClick={() => this.props.onClick(col,row,i)}
       />;
     }
   
@@ -25,19 +25,19 @@ function Square(props) {
       return (
         <div>
           <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
+            {this.renderSquare(0,0,0)}
+            {this.renderSquare(1,0,1)}
+            {this.renderSquare(2,0,2)}
           </div>
           <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
+            {this.renderSquare(0,1,3)}
+            {this.renderSquare(1,1,4)}
+            {this.renderSquare(2,1,5)}
           </div>
           <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
+            {this.renderSquare(0,2,6)}
+            {this.renderSquare(1,2,7)}
+            {this.renderSquare(2,2,8)}
           </div>
         </div>
       );
@@ -56,7 +56,7 @@ function Square(props) {
       }
     }
 
-    handleClick(i){
+    handleClick(col,row,i){
       const history = this.state.history.slice(0, this.state.stepNumber+1);
       const current = history[history.length - 1];
       const squares = current.squares.slice();
@@ -67,6 +67,8 @@ function Square(props) {
       this.setState({
         history: history.concat([{
           squares: squares,
+          col: col,
+          row: row,
         }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
@@ -87,7 +89,7 @@ function Square(props) {
 
       const moves = history.map((step, move) => {
         const desc = move ?
-          'Go to move #' + move :
+          'Go to move #' + move + ' (' + history[move].col + '|' + history[move].row + ')' :
           'Go to game start';
           return(
             <li key={move}>
@@ -108,7 +110,7 @@ function Square(props) {
           <div className="game-board">
             <Board 
               squares={current.squares}
-              onClick={(i) => this.handleClick(i)}
+              onClick={(col,row,i) => this.handleClick(col,row,i)}
             />
           </div>
           <div className="game-info">
