@@ -26,8 +26,6 @@ import './index.css';
         </li>  
       );
     }
-
-    
 }
   
   class Board extends React.Component {
